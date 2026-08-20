@@ -25,3 +25,10 @@ Decision: Make multi-subscription setup all-settled and failure-cleaning, keep d
 Discovery: A rejected member of `Promise.all` can strand the pending lifecycle guard and leak successful sibling subscriptions; browser-originated BROADCAST has no package-owned backend permission boundary.
 Files: packages/WebsocketLab/Schemas/UsrWebsocketReference_Page/UsrWebsocketReference_Page.js, tests/WebsocketLab, README.md, docs/lab-record.md
 Impact: The page can recover from partial subscription failure, designer round-trips retain its result labels, and readers are not taught to trust a client-only announcement route.
+
+## 2026-08-20 16:00 – Guard channel resolution races
+Context: Claude's guidance review found the manager availability check and user-channel lookup were outside the publisher's non-delivery boundary.
+Decision: Convert accessor and lookup exceptions into a logged, non-committal channel-unavailable result and retain payload-free identifiers.
+Discovery: Guarding only `PostMessage` leaves a manager stop between availability check and lookup able to escape as HTTP 500.
+Files: packages/WebsocketLab/Files/src/cs/Messaging/WebSocketMessagePublisher.cs, tests/WebsocketLab/Messaging/WebSocketMessagePublisherTests.cs, README.md
+Impact: The reference now treats both lookup and post races as explicit transient non-delivery without misclassifying every exception as a closed browser.

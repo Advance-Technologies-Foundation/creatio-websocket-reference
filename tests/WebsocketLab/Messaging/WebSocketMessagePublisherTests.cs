@@ -115,12 +115,37 @@ namespace WebsocketLab.Tests.Messaging {
 				because: "a disconnect between channel lookup and posting is an expected transient outcome");
 			result.EventId.Should().BeNull(
 				because: "the event was not accepted by the channel");
-			result.Message.Should().Be("The active user channel closed before the message could be posted.",
+			result.Message.Should().Be("The message could not be posted to the active user channel.",
 				because: "the caller needs a stable non-delivery explanation instead of an HTTP 500 response");
 			logger.Received(1).Warn(
 				Arg.Is<string>(value => Regex.IsMatch(value,
 					@"WebSocket event [0-9a-fA-F-]{36} for user " + userId +
 					@" and sender WebsocketLab\.Message") &&
+					!value.Contains("DoNotLogThisPayload")),
+				Arg.Any<InvalidOperationException>());
+		}
+
+		[Test]
+		[Description("Returns non-delivery and logs identifiers when resolving the user channel throws")]
+		public void Publish_WhenChannelResolutionThrows_ReturnsNotDelivered() {
+			// Arrange
+			Guid userId = Guid.NewGuid();
+			ILog logger = Substitute.For<ILog>();
+			WebSocketMessagePublisher sut = new WebSocketMessagePublisher(
+				() => throw new InvalidOperationException("Manager stopped"), logger);
+
+			// Act
+			WebSocketPublishResult result = sut.Publish(userId, new WebSocketNotification {
+				Message = "DoNotLogThisPayload"
+			});
+
+			// Assert
+			result.Success.Should().BeFalse(
+				because: "a manager race is a transient delivery failure rather than an HTTP 500");
+			result.Message.Should().Be("The Creatio message channel is unavailable.",
+				because: "the caller needs a non-committal channel failure explanation");
+			logger.Received(1).Warn(
+				Arg.Is<string>(value => value.Contains(userId.ToString()) &&
 					!value.Contains("DoNotLogThisPayload")),
 				Arg.Any<InvalidOperationException>());
 		}

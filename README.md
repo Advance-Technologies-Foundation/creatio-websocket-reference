@@ -45,9 +45,15 @@ if (!MsgChannelManager.IsRunning) {
 	return WebSocketPublishResult.NotDelivered("The Creatio message channel is not running.");
 }
 
-IMsgChannel channel = MsgChannelManager.Instance.FindItemByUId(userId);
-if (channel == null) {
-	return WebSocketPublishResult.NotDelivered("The current user has no active browser channel.");
+IMsgChannel channel;
+try {
+	channel = MsgChannelManager.Instance.FindItemByUId(userId);
+	if (channel == null) {
+		return WebSocketPublishResult.NotDelivered("The current user has no active browser channel.");
+	}
+} catch (Exception exception) {
+	logger.Warn($"The WebSocket channel for user {userId} could not be resolved.", exception);
+	return WebSocketPublishResult.NotDelivered("The Creatio message channel is unavailable.");
 }
 
 Guid eventId = Guid.NewGuid();
@@ -63,7 +69,7 @@ try {
 		$"WebSocket event {eventId} for user {userId} and sender WebsocketLab.Message was not posted because the channel closed.",
 		exception);
 	return WebSocketPublishResult.NotDelivered(
-		"The active user channel closed before the message could be posted.");
+		"The message could not be posted to the active user channel.");
 }
 ```
 

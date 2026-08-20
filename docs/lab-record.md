@@ -79,7 +79,7 @@ Command:
 dotnet test tests/WebsocketLab/WebsocketLab.Tests.csproj -c dev-n8 --no-build
 ```
 
-Result: 9 passed, 0 failed.
+Result: 10 passed, 0 failed.
 
 Covered behaviors:
 
@@ -88,6 +88,7 @@ Covered behaviors:
 - current-user channel selection;
 - missing channel result;
 - stopped manager result;
+- throwing manager/channel resolution mapped to logged non-delivery;
 - disconnect between channel lookup and message posting;
 - disconnect logging includes event, user, and sender metadata without the payload;
 - request normalization and validation;
