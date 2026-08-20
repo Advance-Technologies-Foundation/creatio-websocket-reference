@@ -153,10 +153,18 @@ dotnet build MainSolution.slnx -c dev-n8
 clio restart-web-app -e <environment-name> --wait-ready
 ```
 
-Open the page on a .NET 8 Creatio instance:
+The lab page is standalone and is not registered as a section in a workplace. Open it directly by appending
+the path for the target runtime to the Creatio base URL:
+
+| Creatio runtime | Page path |
+|---|---|
+| .NET Framework | `/0/Shell/#Section/UsrWebsocketReference_Page` |
+| .NET 8 or .NET 10 | `/Shell/#Section/UsrWebsocketReference_Page` |
+
+For example, a .NET 8/10 environment at `https://example.creatio.com` uses:
 
 ```text
-<creatio-base-url>/Shell/#Section/UsrWebsocketReference_Page
+https://example.creatio.com/Shell/#Section/UsrWebsocketReference_Page
 ```
 
 Enter a message and choose **Send through backend**. Success requires three independent observations:
