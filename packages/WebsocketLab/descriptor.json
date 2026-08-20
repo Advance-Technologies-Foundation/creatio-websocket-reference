@@ -1,0 +1,20 @@
+{
+  "Descriptor": {
+    "UId": "558a943e-2011-4fc6-a6cf-d73c1be7f45a",
+    "PackageVersion": "0.1.0",
+    "Name": "WebsocketLab",
+    "Type": 1,
+    "ProjectPath": "Files/WebsocketLab.csproj",
+    "ModifiedOnUtc": "/Date(1787215889000)/",
+    "Maintainer": "Customer",
+    "InstallBehavior": 1,
+    "DependsOn": [
+      {
+        "UId": "3a71e376-9ac3-3049-c62b-9c43b9abe054",
+        "PackageVersion": "7.8.0",
+        "Name": "CrtCoreBase",
+        "Type": 1
+      }
+    ]
+  }
+}

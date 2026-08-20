@@ -1,0 +1,26 @@
+**/.vscode
+**/.vs
+**/.idea
+
+**/.application
+**/.solution
+**/.nuget
+**/*.user
+
+**/[O-o]bj
+**/[B-b]in
+**/Libs/*.dll
+
+**\workspaceEnvironmentSettings.json
+
+# Local task brief is not part of the reference repository.
+/TASK.md
+/.clio-pages/
+
+# We only keep en-US resources
+**/resource.??-??.xml
+!**/resource.en-US.xml
+
+# We only keep en-US data
+**/data.??-??.json
+!**/data.en-US.json

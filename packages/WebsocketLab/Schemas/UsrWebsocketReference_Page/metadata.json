@@ -1,0 +1,67 @@
+= MetaData.Schema.UId "ff229314-f90b-412d-8114-78c4c099ab06"
+= MetaData.Schema.A2 "UsrWebsocketReference_Page"
+= MetaData.Schema.A5 "f5f6cee1-84ab-487b-b92a-223ad5ae6950"
++ MetaData.Schema.B2 {
+  "UId": "b5c6aa8f-08a3-435f-ac30-001a4d2d1d08",
+  "A2": "WebSocketLabTitle_caption",
+  "A3": "ff229314-f90b-412d-8114-78c4c099ab06",
+  "A4": "ff229314-f90b-412d-8114-78c4c099ab06",
+  "A5": "f5f6cee1-84ab-487b-b92a-223ad5ae6950"
+}
++ MetaData.Schema.B2 {
+  "UId": "2673169a-7291-4ef6-b65b-00a1b1ac085f",
+  "A2": "WebSocketLabDescription_caption",
+  "A3": "ff229314-f90b-412d-8114-78c4c099ab06",
+  "A4": "ff229314-f90b-412d-8114-78c4c099ab06",
+  "A5": "f5f6cee1-84ab-487b-b92a-223ad5ae6950"
+}
++ MetaData.Schema.B2 {
+  "UId": "88cfa992-a3f4-48ed-8b0c-4a62926e8a9f",
+  "A2": "WebSocketMessageInput_label",
+  "A3": "ff229314-f90b-412d-8114-78c4c099ab06",
+  "A4": "ff229314-f90b-412d-8114-78c4c099ab06",
+  "A5": "f5f6cee1-84ab-487b-b92a-223ad5ae6950"
+}
++ MetaData.Schema.B2 {
+  "UId": "08cd3e7a-e1ab-4d61-a48c-12d92d006ecd",
+  "A2": "WebSocketMessageInput_placeholder",
+  "A3": "ff229314-f90b-412d-8114-78c4c099ab06",
+  "A4": "ff229314-f90b-412d-8114-78c4c099ab06",
+  "A5": "f5f6cee1-84ab-487b-b92a-223ad5ae6950"
+}
++ MetaData.Schema.B2 {
+  "UId": "baf75830-f772-447c-b217-cd2652bc9d9c",
+  "A2": "SendWebSocketMessageButton_caption",
+  "A3": "ff229314-f90b-412d-8114-78c4c099ab06",
+  "A4": "ff229314-f90b-412d-8114-78c4c099ab06",
+  "A5": "f5f6cee1-84ab-487b-b92a-223ad5ae6950"
+}
++ MetaData.Schema.B2 {
+  "UId": "84fd4f0d-cc87-4396-bf7a-2cde4d0719cb",
+  "A2": "WebSocketWaitingStatus_caption",
+  "A3": "ff229314-f90b-412d-8114-78c4c099ab06",
+  "A4": "ff229314-f90b-412d-8114-78c4c099ab06",
+  "A5": "f5f6cee1-84ab-487b-b92a-223ad5ae6950"
+}
++ MetaData.Schema.B2 {
+  "UId": "c1b732a8-3357-4757-b8e1-71926b15013d",
+  "A2": "WebSocketNoMessage_caption",
+  "A3": "ff229314-f90b-412d-8114-78c4c099ab06",
+  "A4": "ff229314-f90b-412d-8114-78c4c099ab06",
+  "A5": "f5f6cee1-84ab-487b-b92a-223ad5ae6950"
+}
+~ MetaData.Schema.B2 [
+  "b5c6aa8f-08a3-435f-ac30-001a4d2d1d08",
+  "2673169a-7291-4ef6-b65b-00a1b1ac085f",
+  "88cfa992-a3f4-48ed-8b0c-4a62926e8a9f",
+  "08cd3e7a-e1ab-4d61-a48c-12d92d006ecd",
+  "baf75830-f772-447c-b217-cd2652bc9d9c",
+  "84fd4f0d-cc87-4396-bf7a-2cde4d0719cb",
+  "c1b732a8-3357-4757-b8e1-71926b15013d"
+]
+= MetaData.Schema.B6 "558a943e-2011-4fc6-a6cf-d73c1be7f45a"
+= MetaData.Schema.B8 "10.0.0.858"
+= MetaData.Schema.HD1 "f691e828-0b36-42a7-898f-c337e9af67d0"
++ MetaData.Schema.HD15 1
+= MetaData.Schema.HD6 "define('{0}Structure', ['{0}Resources'], function(resources) {{return {{schemaUId:'{2}',schemaName:'{3}',parentSchemaUId:'{4}',extendParent:{5},type:Terrasoft.SchemaType.ANGULAR_SCHEMA,entitySchema:'',name:'',extend:'Terrasoft.model.BaseViewModel',schema:{{leftPanel:[],rightPanel:[],actions:[],analytics:[]}},methods:{{}},controlsConfig:{{}},customBindings:{{}},bindings:{{}},parameters:{{}},schemaVersion:1,optionalProperties:{{}},schemaDifferences:function(){{\n{1}\n}}}};}});"
++ MetaData.Schema.B7 false

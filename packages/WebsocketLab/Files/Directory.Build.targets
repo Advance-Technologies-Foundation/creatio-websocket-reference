@@ -1,0 +1,19 @@
+<Project>
+    <ItemGroup Condition="'$(PkgPath)' != ''">
+        <Compile Remove="$(PkgPath)/WebsocketLab/Assemblies/**" />
+        <Compile Remove="$(PkgPath)/WebsocketLab/Data/**" />
+        <Compile Remove="$(PkgPath)/WebsocketLab/SqlScripts/**" />
+        <Compile Remove="$(PkgPath)/WebsocketLab/Schemas\**" />
+        <Compile Remove="$(PkgPath)/WebsocketLab/Resources/**" />
+        <EmbeddedResource Remove="$(PkgPath)/WebsocketLab/Assemblies/**" />
+        <EmbeddedResource Remove="$(PkgPath)/WebsocketLab/Data/**" />
+        <EmbeddedResource Remove="$(PkgPath)/WebsocketLab/SqlScripts/**" />
+        <EmbeddedResource Remove="$(PkgPath)/WebsocketLab/Schemas/**" />
+        <EmbeddedResource Remove="$(PkgPath)/WebsocketLab/Resources/**" />
+        <None Remove="$(PkgPath)/WebsocketLab/Assemblies/**" />
+        <None Remove="$(PkgPath)/WebsocketLab/Data/**" />
+        <None Remove="$(PkgPath)/WebsocketLab/SqlScripts/**" />
+        <None Remove="$(PkgPath)/WebsocketLab/Schemas/**" />
+        <None Remove="$(PkgPath)/WebsocketLab/Resources/**" />
+    </ItemGroup>
+</Project>

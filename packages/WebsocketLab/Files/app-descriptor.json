@@ -1,0 +1,21 @@
+{
+  "Name": "WebsocketLab",
+  "Description": "",
+  "Maintainer": "Customer",
+  "Icon": "",
+  "IconName": "",
+  "Color": "#FFAC07",
+  "Version": "0.1.0",
+  "RequiredPlatformVersion": "8.3.3",
+  "MarketplaceLink": "",
+  "HelpLink": "",
+  "OrderLink": "",
+  "SupportEmail": "",
+  "Code": "WebsocketLab",
+  "Packages": [
+    {
+      "UId": "558a943e-2011-4fc6-a6cf-d73c1be7f45a",
+      "Name": "WebsocketLab"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Resources Culture="en-US">
+	<Group Type="String">
+		<Items>
+			<Item Name="Caption" Value="WebSocket reference" />
+			<Item Name="Description" Value="Backend-to-frontend WebSocket reference lab" />
+			<Item Name="LocalizableStrings.SendWebSocketMessageButton_caption.Value" Value="Send through backend" />
+			<Item Name="LocalizableStrings.WebSocketLabDescription_caption.Value" Value="Send a REST request that posts a transient Creatio message to the authenticated user's active browser connection(s)." />
+			<Item Name="LocalizableStrings.WebSocketLabTitle_caption.Value" Value="Backend-to-frontend WebSocket lab" />
+			<Item Name="LocalizableStrings.WebSocketMessageInput_label.Value" Value="Message" />
+			<Item Name="LocalizableStrings.WebSocketMessageInput_placeholder.Value" Value="Enter a short message" />
+			<Item Name="LocalizableStrings.WebSocketNoMessage_caption.Value" Value="No WebSocket message received yet." />
+			<Item Name="LocalizableStrings.WebSocketWaitingStatus_caption.Value" Value="Waiting for a message." />
+		</Items>
+	</Group>
+</Resources>

@@ -1,0 +1,13 @@
+﻿{
+  "Descriptor": {
+    "UId": "ff229314-f90b-412d-8114-78c4c099ab06",
+    "Name": "UsrWebsocketReference_Page",
+    "ModifiedOnUtc": "\/Date(1787217279000)\/",
+    "Parent": {
+      "UId": "f691e828-0b36-42a7-898f-c337e9af67d0",
+      "Name": "BlankPageTemplate"
+    },
+    "ManagerName": "ClientUnitSchemaManager",
+    "Caption": "WebSocket reference"
+  }
+}
