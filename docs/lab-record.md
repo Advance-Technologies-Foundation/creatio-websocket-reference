@@ -1,6 +1,6 @@
 # WebSocket reference lab record
 
-This record preserves the evidence used to derive the reusable backend-to-frontend guidance. The public
+This record preserves the evidence used to derive the reusable Creatio WebSocket guidance. The public
 guide should contain the resulting decisions, not this investigation chronology.
 
 ## Verification context
@@ -28,7 +28,9 @@ credentials, cookies, and machine-specific source paths are intentionally omitte
 | What happens when the browser is offline? | `FindItemByUId` returns `null`. | Return an expected non-delivery result; never dereference the missing channel. | Verified by unit test |
 | Is delivery durable? | Channels represent currently connected sessions and no backlog is created by `PostMessage`. | Document the mechanism as transient notification, not a queue. | Verified in platform source and live behavior |
 | How is subscription lifetime managed? | Freedom UI exposes paired resume/pause and init/destroy lifecycle requests. | Subscribe once on resume and unsubscribe on pause for a suspendable page. | Verified and executable |
-| Does one user with multiple connections receive the message? | The local server exposes a composite per-user channel over the user's physical connections. | Treat targeting as user-scoped, not tab-scoped. | Verified in platform source; not independently exercised with two tabs |
+| Does frontend PTP bridge the same user's pages? | `MessageChannelType.PTP` was sent from one tab and received by both open tabs for the same authenticated user. | Use PTP for a same-user frontend bridge; do not describe it as tab-targeted. | Verified in source and live with two tabs |
+| Does frontend BROADCAST fan out? | `MessageChannelType.BROADCAST` was sent from one tab and received by both connected lab pages. Core source routes it to all active channels. | Treat browser BROADCAST as low-trust; use a permission-checked backend endpoint for trusted announcements. | Live fan-out verified for one user/two tabs; all-user scope source-verified |
+| Can an ordinary package handle frontend SERVER messages? | Platform interfaces expose inbound events, but the package cannot resolve `IMsgServiceLayer` or `IWebSocketServer`; the attempted `ClassFactory` path had no binding. | Do not publish a package SERVER handler until Creatio exposes a supported public receive hook. | Negative result verified in source and live .NET 8 runtime |
 | Does cluster mode preserve the same contract? | The platform cluster implementation uses its messaging service layer while retaining the user-keyed channel manager contract. | Use the same application API; do not implement custom Redis behavior in application code. | Source-verified; live lab used one node |
 
 ## Failed experiments that changed the implementation
@@ -53,6 +55,22 @@ credentials, cookies, and machine-specific source paths are intentionally omitte
 - Guidance effect: obtain the running manager from `MsgChannelManager.Instance`; do not assume the interface
   is resolvable from `ClassFactory`.
 
+### Receiving frontend SERVER messages from a standalone package failed
+
+- Input: send `MessageChannelType.SERVER` with logical sender `WebsocketLab.ServerRequest`, attach a package
+  application-start listener, resolve `IMsgServiceLayer`, and subscribe to connected channel messages.
+- Source evidence: Creatio exposes `IMsgServiceLayer.OnMsgChannelConnected` and
+  `IWebSocketServer.OnChannelMessage`. Built-in platform listeners are registered in core DI and resolved
+  through the internal `CoreApiContainer`.
+- Live failure: `ClassFactory.Get<IMsgServiceLayer>()` threw `InstanceActivationException` because Ninject
+  had no matching binding. The frontend request left the page but no backend response returned.
+- Rejected workaround: reflection into `CoreApiContainer` or private `MsgChannelManager` fields. That would
+  turn a reference example into a version-fragile dependency on internal implementation.
+- Correction: remove the nonfunctional SERVER button and handler. Keep REST-in plus WebSocket-out as the
+  supported bidirectional application flow.
+- Independent review: Claude reached the same repository-scoped conclusion after a focused second pass:
+  no supported package-accessible acquisition path was present in the evidence.
+
 ## Focused automated acceptance
 
 Command:
@@ -71,10 +89,11 @@ Covered behaviors:
 - missing channel result;
 - stopped manager result;
 - disconnect between channel lookup and message posting;
+- disconnect logging includes event, user, and sender metadata without the payload;
 - request normalization and validation;
 - 1,000-character REST payload boundary;
 - service mapping of a transient non-delivery result.
-- frontend sender parity, modern SDK usage, and paired resume/pause cleanup.
+- frontend backend/PTP/BROADCAST sender parity, public SDK routes, and paired resume/pause cleanup.
 
 ## Live end-to-end acceptance
 
@@ -103,6 +122,13 @@ Independent signals agreed:
 3. The visible page received and displayed the exact message from `event.body.message`.
 4. The browser console recorded no new errors during the successful run.
 
+Frontend routing checks:
+
+- PTP sent from tab one was displayed in tab one and tab two for the same authenticated user;
+- BROADCAST sent from tab two was displayed in both connected lab tabs;
+- after removing the rejected SERVER listener, the environment restarted without the package application-event
+  activation error.
+
 Exploratory checks:
 
 - whitespace-only input displayed client validation and made zero service calls;
@@ -110,18 +136,20 @@ Exploratory checks:
 - after navigate-away/navigate-back cycles, instrumentation observed one subscription per resume and one
   unsubscribe per pause; the pending-subscription guard prevented concurrent resume requests from leaking a
   second callback;
-- 1600×900 and 1024×768 viewports had no horizontal or vertical document overflow;
-- the title, input, primary action, acknowledgement, and received value remained visible in both viewports.
+- the three actions remained visible in one row at both 1600×900 and 1024×768 with no horizontal overflow;
+- the title, input, actions, acknowledgement, and route-specific results remained visible.
 
-Screenshots: [1600×900](images/websocket-live-proof.png) and
-[1024×768](images/websocket-live-proof-1024.png).
+The earlier screenshots are intentionally not cited because they predate the PTP and BROADCAST controls.
 
 ## Known boundaries
 
 - Verified live on one .NET 8 node and one authenticated user.
-- Multiple physical channels for one user and clustered transport were explained by platform source, not
-  independently exercised in this lab.
-- Broadcast via `PostToAll` was intentionally not implemented because the requested outcome is current-user
-  backend-to-frontend messaging and broadcast broadens the data-exposure boundary.
+- PTP was exercised with two tabs for one authenticated user. A second authenticated user was not available,
+  so BROADCAST's all-user boundary is source-verified rather than independently proven across identities.
+- Frontend SERVER handling is used by internal Creatio features, but no supported receive hook was found for
+  ordinary standalone application packages on the tested .NET 8 runtime.
+- Clustered frontend-originated SERVER processing was not tested. Core source suggests every node observes
+  the cluster event, so any future business handler would also need an explicit idempotency/single-consumer
+  design.
 - Offline replay, ordering across reconnects, acknowledgement from the browser, and durable processing are
   unsupported by this mechanism. Persist important state separately.

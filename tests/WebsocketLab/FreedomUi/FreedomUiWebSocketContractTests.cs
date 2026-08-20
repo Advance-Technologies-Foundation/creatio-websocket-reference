@@ -1,4 +1,6 @@
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -14,15 +16,30 @@ namespace WebsocketLab.Tests.FreedomUi {
 			string repositoryRoot = FindRepositoryRoot();
 			string pageBody = File.ReadAllText(Path.Combine(repositoryRoot, "packages", "WebsocketLab", "Schemas",
 				"UsrWebsocketReference_Page", "UsrWebsocketReference_Page.js"));
+			string resourceBody = File.ReadAllText(Path.Combine(repositoryRoot, "packages", "WebsocketLab", "Resources",
+				"UsrWebsocketReference_Page.ClientUnit", "resource.en-US.xml"));
+			string metadataBody = File.ReadAllText(Path.Combine(repositoryRoot, "packages", "WebsocketLab", "Schemas",
+				"UsrWebsocketReference_Page", "metadata.json"));
 
 			// Act
 			string[] requiredFragments = {
-				"const senderName = \"WebsocketLab.Message\"",
+				"backend: \"WebsocketLab.Message\"",
+				"ptp: \"WebsocketLab.Ptp\"",
+				"broadcast: \"WebsocketLab.Broadcast\"",
 				"new sdk.MessageChannelService()",
+				"sdk.MessageChannelType.PTP",
+				"sdk.MessageChannelType.BROADCAST",
+				"Promise.allSettled",
+				"usr.SendBackendPushRequest",
+				"usr.SendPtpRequest",
+				"usr.SendBroadcastRequest",
+				"$UsrBackendPushResult",
+				"$UsrPtpResult",
+				"$UsrBroadcastResult",
 				"crt.HandleViewModelResumeRequest",
 				"crt.HandleViewModelPauseRequest",
-				"UsrWebSocketSubscriptionPending",
-				"UsrWebSocketSubscription.unsubscribe()"
+				"UsrWebSocketSubscriptionsPending",
+				"unsubscribeAll(request.$context.UsrWebSocketSubscriptions)"
 			};
 
 			// Assert
@@ -30,6 +47,21 @@ namespace WebsocketLab.Tests.FreedomUi {
 				because: "the page must subscribe with the backend sender and release the runtime handle");
 			pageBody.Should().NotContain("Terrasoft.ServerChannel",
 				because: "new Freedom UI code uses the public MessageChannelService API");
+			string viewConfig = pageBody.Split("/**SCHEMA_VIEW_CONFIG_DIFF*/")[1];
+			viewConfig.Should().NotContain("...",
+				because: "the designer-managed view configuration must remain declarative JSON-like metadata");
+			viewConfig.Should().NotContain(".map(",
+				because: "generated JavaScript entries cannot be round-tripped by the page designer");
+			string[] resourceKeys = Regex.Matches(pageBody, @"#ResourceString\(([^)]+)\)#")
+				.Select(match => match.Groups[1].Value)
+				.Distinct()
+				.ToArray();
+			foreach (string resourceKey in resourceKeys) {
+				resourceBody.Should().Contain($"LocalizableStrings.{resourceKey}.Value",
+					because: $"the en-US resource must define the page key {resourceKey}");
+				metadataBody.Should().Contain($"\"{resourceKey}\"",
+					because: $"the client-unit metadata must register the page key {resourceKey}");
+			}
 		}
 
 		private static string FindRepositoryRoot() {

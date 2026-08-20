@@ -35,7 +35,9 @@ namespace WebsocketLabApp.Messaging {
 			try {
 				channel.PostMessage(message);
 			} catch (Exception exception) {
-				_logger.Warn("The user message channel closed before the WebSocket event could be posted.", exception);
+				_logger.Warn(
+					$"WebSocket event {eventId} for user {userId} and sender {Constants.WebSocketSenderName} was not posted because the channel closed.",
+					exception);
 				return WebSocketPublishResult.NotDelivered(
 					"The active user channel closed before the message could be posted.");
 			}

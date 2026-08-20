@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using Common.Logging;
 using FluentAssertions;
 using Newtonsoft.Json.Linq;
@@ -101,10 +102,13 @@ namespace WebsocketLab.Tests.Messaging {
 			manager.FindItemByUId(userId).Returns(channel);
 			channel.When(item => item.PostMessage(Arg.Any<IMsg>()))
 				.Do(_ => throw new InvalidOperationException("Channel closed"));
-			WebSocketMessagePublisher sut = CreateSut(() => manager);
+			ILog logger = Substitute.For<ILog>();
+			WebSocketMessagePublisher sut = new WebSocketMessagePublisher(() => manager, logger);
 
 			// Act
-			WebSocketPublishResult result = sut.Publish(userId, new WebSocketNotification());
+			WebSocketPublishResult result = sut.Publish(userId, new WebSocketNotification {
+				Message = "DoNotLogThisPayload"
+			});
 
 			// Assert
 			result.Success.Should().BeFalse(
@@ -113,6 +117,12 @@ namespace WebsocketLab.Tests.Messaging {
 				because: "the event was not accepted by the channel");
 			result.Message.Should().Be("The active user channel closed before the message could be posted.",
 				because: "the caller needs a stable non-delivery explanation instead of an HTTP 500 response");
+			logger.Received(1).Warn(
+				Arg.Is<string>(value => Regex.IsMatch(value,
+					@"WebSocket event [0-9a-fA-F-]{36} for user " + userId +
+					@" and sender WebsocketLab\.Message") &&
+					!value.Contains("DoNotLogThisPayload")),
+				Arg.Any<InvalidOperationException>());
 		}
 	}
 }

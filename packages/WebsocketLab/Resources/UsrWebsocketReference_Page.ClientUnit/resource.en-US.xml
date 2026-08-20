@@ -3,13 +3,18 @@
 	<Group Type="String">
 		<Items>
 			<Item Name="Caption" Value="WebSocket reference" />
-			<Item Name="Description" Value="Backend-to-frontend WebSocket reference lab" />
-			<Item Name="LocalizableStrings.SendWebSocketMessageButton_caption.Value" Value="Send through backend" />
-			<Item Name="LocalizableStrings.WebSocketLabDescription_caption.Value" Value="Send a REST request that posts a transient Creatio message to the authenticated user's active browser connection(s)." />
-			<Item Name="LocalizableStrings.WebSocketLabTitle_caption.Value" Value="Backend-to-frontend WebSocket lab" />
+			<Item Name="Description" Value="Creatio WebSocket routing reference lab" />
+			<Item Name="LocalizableStrings.SendBackendPushButton_caption.Value" Value="Backend push" />
+			<Item Name="LocalizableStrings.SendPtpButton_caption.Value" Value="PTP to my user" />
+			<Item Name="LocalizableStrings.SendBroadcastButton_caption.Value" Value="Broadcast to all" />
+			<Item Name="LocalizableStrings.WebSocketLabDescription_caption.Value" Value="Compare backend push, same-user PTP, and all-user broadcast." />
+			<Item Name="LocalizableStrings.WebSocketLabTitle_caption.Value" Value="Creatio WebSocket lab" />
 			<Item Name="LocalizableStrings.WebSocketMessageInput_label.Value" Value="Message" />
 			<Item Name="LocalizableStrings.WebSocketMessageInput_placeholder.Value" Value="Enter a short message" />
-			<Item Name="LocalizableStrings.WebSocketNoMessage_caption.Value" Value="No WebSocket message received yet." />
+			<Item Name="LocalizableStrings.WebSocketResultsTitle_caption.Value" Value="Last received message by route" />
+			<Item Name="LocalizableStrings.BackendPushNoMessage_caption.Value" Value="Backend push: none received." />
+			<Item Name="LocalizableStrings.PtpNoMessage_caption.Value" Value="PTP: none received." />
+			<Item Name="LocalizableStrings.BroadcastNoMessage_caption.Value" Value="Broadcast: none received." />
 			<Item Name="LocalizableStrings.WebSocketWaitingStatus_caption.Value" Value="Waiting for a message." />
 		</Items>
 	</Group>
